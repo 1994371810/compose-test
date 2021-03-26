@@ -1,0 +1,20 @@
+version: '3' #指定docker-compose文件版本
+services:
+  web:  #web服务相关配置
+    build:
+      dockerfile: "Dockerfile" #Dockerfile名称
+      context: "/data/web" #构建的目录
+    ports:
+    - '8888:8888' #映射的端口
+    depends_on:
+      - redis #依赖redis
+    container_name: "gudian_web" #设置容器名称
+
+  redis:
+    image: "redis:6.2.1" #以redis镜像启动
+    volumes: #挂载目录
+    - "/data/redis:/data"
+    ports: #指定端口
+    - "6379:6379"
+    container_name: "gudian_redis" #设置容器名称
+    command: "redis-server /data/redis.conf" #覆盖redis默认的启动命令
